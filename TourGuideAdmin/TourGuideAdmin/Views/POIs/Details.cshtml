@@ -1,0 +1,39 @@
+﻿@model TourGuideAdmin.Models.POI
+
+@{
+    ViewData["Title"] = "Chi tiết Địa điểm";
+}
+
+<div class="qr-page-header" data-watermark="INFO">
+    <h2>📄 Chi tiết Địa điểm</h2>
+    <p>Thông tin đầy đủ của: <strong>@Model.Name_VI</strong></p>
+</div>
+
+<div class="qr-card">
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <img src="~/images/pois/@Model.ImageUrl" class="card-img-top" alt="@Model.Name_VI" style="max-width:500px;width:100%;border-radius:12px;border:1px solid var(--qr-border);" />
+    }
+    else
+    {
+        <div class="bg-light text-center d-flex align-items-center justify-content-center" style="height: 250px;">
+            <span class="text-muted">📷 Chưa có hình ảnh</span>
+        </div>
+    }
+    
+    
+    <div class="qr-info-row"><div class="lbl">Mã ID</div><div class="val">#@Model.Id</div></div>
+    <div class="qr-info-row"><div class="lbl">Thuộc Tour</div><div class="val">Tour #@Model.TourId</div></div>
+    <div class="qr-info-row"><div class="lbl">Tên (VI)</div><div class="val" style="font-weight:600;color:var(--qr-accent-dark);">@Model.Name_VI</div></div>
+    <div class="qr-info-row"><div class="lbl">Vĩ độ</div><div class="val">@Model.Latitude</div></div>
+    <div class="qr-info-row"><div class="lbl">Kinh độ</div><div class="val">@Model.Longitude</div></div>
+    <div class="qr-info-row"><div class="lbl">Bán kính kích hoạt</div><div class="val">@Model.TriggerRadius m</div></div>
+    <div class="qr-info-row"><div class="lbl">Độ ưu tiên</div><div class="val">@Model.Priority</div></div>
+    <div class="qr-info-row"><div class="lbl">Nổi bật</div><div class="val">@(Model.IsFavorite ? "❤️ Có" : "—")</div></div>
+    <div class="qr-info-row"><div class="lbl">Thuyết minh (VI)</div><div class="val" style="white-space:pre-wrap;line-height:1.7;">@Model.Description_VI</div></div>
+
+    <div class="qr-form-actions">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-qr">✏️ Sửa</a>
+        <a asp-action="Index" class="btn-qr-outline">← Quay lại danh sách</a>
+    </div>
+</div>

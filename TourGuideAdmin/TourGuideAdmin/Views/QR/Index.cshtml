@@ -1,0 +1,128 @@
+﻿@model IEnumerable<TourGuideAdmin.Models.POI>
+
+@{
+    ViewData["Title"] = "Quản lý Mã QR";
+    var tours = ViewBag.Tours as IEnumerable<TourGuideAdmin.Models.Tour>;
+    var selectedTourId = ViewBag.SelectedTourId as int?;
+    var searchString = ViewBag.SearchString as string;
+    var totalCount = (int)ViewBag.TotalCount;
+}
+
+
+<!-- Page Header -->
+<div class="qr-page-header">
+    <h2>📲 Damh sách Mã QR</h2>
+    <p>Tạo, xem và tải xuống mã QR cho tất cả địa điểm (POI)</p>
+    <div class="qr-stat-badge">
+        <span>📍</span>
+        <strong>@totalCount</strong> địa điểm trong hệ thống
+    </div>
+</div>
+
+<!-- Filter Bar -->
+<form asp-action="Index" method="get" class="filter-bar">
+    <input type="text" name="searchString" class="form-control" style="max-width:260px;"
+           placeholder="🔍 Tìm tên địa điểm..." value="@searchString" />
+    <select name="tourId" class="form-select" style="max-width:200px;">
+        <option value="">-- Tất cả Tour --</option>
+        @if (tours != null)
+        {
+            foreach (var t in tours)
+            {
+                <option value="@t.Id" selected="@(selectedTourId == t.Id)">
+                    Tour @t.Id — @t.Name_VI
+                </option>
+            }
+        }
+    </select>
+    <button type="submit" class="btn-qr-primary">Lọc</button>
+    <a asp-action="Index" class="btn-qr-outline">Đặt lại</a>
+</form>
+
+<!-- Action Bar -->
+<div class="action-bar">
+    <span class="result-count">
+        Hiển thị <strong>@Model.Count()</strong> địa điểm
+        @if (!string.IsNullOrEmpty(searchString) || selectedTourId.HasValue)
+        {
+            <span class="text-muted"> (đang lọc)</span>
+        }
+    </span>
+</div>
+
+<!-- QR Grid -->
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <div class="icon">📭</div>
+        <h5>Không có địa điểm nào</h5>
+        <p>Thêm địa điểm mới hoặc thay đổi bộ lọc.</p>
+        <a asp-controller="POIs" asp-action="Create" class="btn-qr-primary mt-3">+ Thêm địa điểm</a>
+    </div>
+}
+else
+{
+    <div class="qr-grid">
+        @foreach (var poi in Model)
+        {
+            <div class="qr-item-card">
+                <span class="tour-badge">Tour @poi.TourId</span>
+
+                <div class="qr-img-wrap mt-3"
+                     onclick="openQRModal(@poi.Id, '@Html.Raw(Html.Encode(poi.Name_VI ?? poi.Name_EN ?? $"POI {poi.Id}"))')">
+                    <img src="@Url.Action("Image", "QR", new { id = poi.Id, size = 5 })"
+                         alt="QR @poi.Name_VI"
+                         loading="lazy" />
+                </div>
+
+                <div class="qr-card-name">@(poi.Name_VI ?? poi.Name_EN ?? $"POI #{poi.Id}")</div>
+                <div class="qr-card-coord">@poi.Latitude.ToString("F4"), @poi.Longitude.ToString("F4")</div>
+
+                <div class="qr-card-actions">
+                    <a asp-controller="POIs" asp-action="Edit" asp-route-id="@poi.Id" class="btn-view">✏️ Sửa</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<!-- QR Modal (phóng to) -->
+<div class="qr-modal-overlay" id="qrModal" onclick="closeQRModal(event)">
+    <div class="qr-modal-box" style="position:relative;">
+        <button class="qr-modal-close" onclick="closeQRModalBtn()">✕</button>
+        <h5 id="modalPoiName">—</h5>
+        <p id="modalPoiSub" style="color:#8a7060; font-size:.85rem; margin:0;"></p>
+        <img id="modalQRImg" src="" alt="QR Code" />
+        <div class="modal-actions">
+            <a id="modalDownloadBtn" href="#" class="btn-qr-primary">⬇️ Tải PNG</a>
+            <a id="modalPrintBtn" href="#" target="_blank" class="btn-qr-outline">🖨️ Trang in</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openQRModal(poiId, poiName) {
+            document.getElementById('modalPoiName').textContent = poiName;
+            document.getElementById('modalPoiSub').textContent = 'ID: ' + poiId;
+            document.getElementById('modalQRImg').src = '/QR/Image/' + poiId + '?size=12';
+            document.getElementById('modalDownloadBtn').href = '/QR/Download/' + poiId;
+            document.getElementById('modalPrintBtn').href = '/QR/Print/' + poiId;
+            document.getElementById('qrModal').classList.add('active');
+        }
+
+        function closeQRModal(e) {
+            if (e.target === document.getElementById('qrModal')) {
+                document.getElementById('qrModal').classList.remove('active');
+            }
+        }
+
+        function closeQRModalBtn() {
+            document.getElementById('qrModal').classList.remove('active');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') document.getElementById('qrModal').classList.remove('active');
+        });
+    </script>
+}

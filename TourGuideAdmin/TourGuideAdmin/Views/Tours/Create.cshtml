@@ -1,0 +1,49 @@
+﻿@model TourGuideAdmin.Models.Tour
+
+@{
+    ViewData["Title"] = "Thêm Tour";
+}
+
+<div class="qr-page-header" data-watermark="TOUR">
+    <h2>🗺️ Thêm Tour mới</h2>
+    <p>Tạo một tour tham quan mới cho hệ thống</p>
+</div>
+
+<div class="qr-card">
+    <form asp-action="Create" enctype="multipart/form-data" class="qr-form">
+        <div asp-validation-summary="ModelOnly" class="qr-validation"></div>
+
+        <div class="qr-field">
+            <label asp-for="Name_VI">Tên Tour (Tiếng Việt) <span class="req">*</span></label>
+            <input asp-for="Name_VI" class="form-control" placeholder="VD: Sài Gòn Xưa & Nay" required />
+            <span asp-validation-for="Name_VI" class="qr-validation"></span>
+        </div>
+
+        <div class="qr-field">
+            <label asp-for="EstimatedTime">Thời gian ước tính</label>
+            <input asp-for="EstimatedTime" class="form-control" placeholder="VD: 3 Giờ" />
+        </div>
+
+        <div class="qr-field">
+            <label asp-for="Description_VI">Thuyết minh Tour (Tiếng Việt)</label>
+            <textarea asp-for="Description_VI" rows="9" placeholder="Giới thiệu lộ trình, điểm đặc biệt..."></textarea>
+        </div>
+
+        <div class="qr-field">
+            <label>Hình ảnh tour</label>
+            <input type="file" name="fileHinhAnh" class="form-control" accept="image/*" />
+            <div class="hint">Định dạng: JPG, PNG. Khuyến nghị tỷ lệ 16:9.</div>
+        </div>
+
+        <div class="qr-form-actions">
+            <button type="submit" class="btn-qr">💾 Lưu tour</button>
+            <a asp-action="Index" class="btn-qr-outline">← Quay lại danh sách</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

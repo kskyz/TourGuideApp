@@ -1,0 +1,90 @@
+﻿@model TourGuideAdmin.Models.POI
+
+@{
+    ViewData["Title"] = "Sửa Địa điểm";
+}
+
+<div class="qr-page-header" data-watermark="EDIT">
+    <h2>✏️ Sửa Địa điểm</h2>
+    <p>Cập nhật thông tin cho địa điểm: <strong>@Model.Name_VI</strong></p>
+</div>
+
+<div class="qr-card">
+    <form asp-action="Edit" enctype="multipart/form-data" class="qr-form">
+        <div asp-validation-summary="ModelOnly" class="qr-validation"></div>
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ImageUrl" />
+
+        <div class="qr-form-row">
+            <div class="qr-field">
+                <label asp-for="TourId">Thuộc Tour (Mã ID) <span class="req">*</span></label>
+                <input asp-for="TourId" class="form-control" required />
+            </div>
+            <div class="qr-field">
+                <label asp-for="Name_VI">Tên Địa Điểm (Tiếng Việt) <span class="req">*</span></label>
+                <input asp-for="Name_VI" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="qr-form-row">
+            <div class="qr-field">
+                <label asp-for="Latitude">Vĩ độ</label>
+                <input asp-for="Latitude" class="form-control" />
+            </div>
+            <div class="qr-field">
+                <label asp-for="Longitude">Kinh độ</label>
+                <input asp-for="Longitude" class="form-control" />
+            </div>
+        </div>
+
+        <div class="qr-form-row">
+            <div class="qr-field">
+                <label asp-for="TriggerRadius">Bán kính kích hoạt (m)</label>
+                <input asp-for="TriggerRadius" class="form-control" />
+            </div>
+            <div class="qr-field">
+                <label asp-for="Priority">Độ ưu tiên</label>
+                <input asp-for="Priority" class="form-control" />
+            </div>
+        </div>
+
+        <div class="qr-field">
+            <label class="qr-check">
+                <input class="form-check-input" asp-for="IsFavorite" />
+                ❤️ Đánh dấu là Địa điểm Nổi bật
+            </label>
+        </div>
+
+        <div class="qr-field">
+            <label asp-for="Description_VI">Thuyết minh (Tiếng Việt)</label>
+            <textarea asp-for="Description_VI" rows="8"></textarea>
+        </div>
+
+        <div class="qr-field">
+            <label>Hình ảnh hiện tại</label>
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="~/images/pois/@Model.ImageUrl" class="card-img-top" alt="@Model.Name_VI" style="max-width:500px;width:100%;border-radius:12px;border:1px solid var(--qr-border);" />
+            }
+            else
+            {
+                <div class="bg-light text-center d-flex align-items-center justify-content-center" style="height: 250px;">
+                    <span class="text-muted">📷 Chưa có hình ảnh</span>
+                </div>
+            }
+            <input type="file" name="fileHinhAnh" class="form-control" accept="image/*" />
+            <div class="hint">Để trống nếu không muốn đổi hình.</div>
+        </div>
+
+        <div class="qr-form-actions">
+            <button type="submit" class="btn-qr">💾 Lưu thay đổi</button>
+            <a asp-action="Index" class="btn-qr-outline">← Quay lại danh sách</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

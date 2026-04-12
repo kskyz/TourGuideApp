@@ -1,0 +1,60 @@
+﻿@model TourGuideAdmin.Models.Tour
+
+@{
+    ViewData["Title"] = "Sửa Tour";
+}
+
+<div class="qr-page-header" data-watermark="EDIT">
+    <h2>✏️ Sửa Tour</h2>
+    <p>Cập nhật thông tin tour: <strong>@Model.Name_VI</strong></p>
+</div>
+
+<div class="qr-card">
+    <form asp-action="Edit" enctype="multipart/form-data" class="qr-form">
+        <div asp-validation-summary="ModelOnly" class="qr-validation"></div>
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ImageUrl" />
+
+        <div class="qr-field">
+            <label asp-for="Name_VI">Tên Tour (Tiếng Việt) <span class="req">*</span></label>
+            <input asp-for="Name_VI" class="form-control" required />
+        </div>
+
+        <div class="qr-field">
+            <label asp-for="EstimatedTime">Thời gian ước tính</label>
+            <input asp-for="EstimatedTime" class="form-control" />
+        </div>
+
+        <div class="qr-field">
+            <label asp-for="Description_VI">Thuyết minh Tour (Tiếng Việt)</label>
+            <textarea asp-for="Description_VI" rows="9"></textarea>
+        </div>
+
+        <div class="qr-field">
+            <label>Hình ảnh hiện tại</label>
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="~/images/tours/@Model.ImageUrl" class="card-img-top" alt="@Model.Name_VI" style="max-width:500px;width:100%;border-radius:12px;border:1px solid var(--qr-border);" />
+            }
+            else
+            {
+                <div class="bg-light text-center d-flex align-items-center justify-content-center" style="height: 250px;">
+                    <span class="text-muted">📷 Chưa có hình ảnh</span>
+                </div>
+            }
+            <input type="file" name="fileHinhAnh" class="form-control" accept="image/*" />
+            <div class="hint">Để trống nếu không muốn đổi hình.</div>
+        </div>
+
+        <div class="qr-form-actions">
+            <button type="submit" class="btn-qr">💾 Lưu thay đổi</button>
+            <a asp-action="Index" class="btn-qr-outline">← Quay lại danh sách</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

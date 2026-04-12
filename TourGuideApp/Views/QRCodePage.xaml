@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:lang="clr-namespace:TourGuideApp.Resources.Languages"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+             x:Class="TourGuideApp.Views.QRCodePage"
+             BackgroundColor="#FAF7F2"
+             Shell.NavBarIsVisible="False">
+
+    <VerticalStackLayout Padding="20,40,20,0" Spacing="20">
+        <Label Text="{x:Static lang:AppLang.QRTitle}"
+               FontFamily="Serif"
+               FontSize="28"
+               FontAttributes="Bold"
+               TextColor="#4A3A31"/>
+
+        <Label Text="{x:Static lang:AppLang.QRSubtitle}"
+               FontSize="14"
+               TextColor="Gray"
+               HorizontalOptions="Center"/>
+        <Label x:Name="barcodeResult"
+               FontSize="20"/>
+
+        <Grid HorizontalOptions="Center" VerticalOptions="Center">
+
+            <Frame
+                WidthRequest="265"
+                HeightRequest="265"
+                CornerRadius="20"
+                Padding="0"
+                IsClippedToBounds="True"
+                HasShadow="True"
+                BorderColor="#4A3A31">
+
+                <Grid>
+                    <!-- ZXing CameraBarcodeReaderView -->
+                    <zxing:CameraBarcodeReaderView
+                        x:Name="barcodeReader"
+                        IsDetecting="True"
+                        BarcodesDetected="barcodeReader_BarcodesDetected"/>
+                </Grid>
+
+            </Frame>
+
+            <!-- Khung scan -->
+            <Grid WidthRequest="300"
+                  HeightRequest="300"
+                  HorizontalOptions="Center"
+                  VerticalOptions="Center"
+                  InputTransparent="True">
+
+                <Border Stroke="#FFFFFF"
+                        StrokeThickness="1"
+                        BackgroundColor="Transparent"/>
+
+                <BoxView WidthRequest="30" HeightRequest="4" BackgroundColor="#4A3A31"
+                         HorizontalOptions="Start" VerticalOptions="Start"/>
+                <BoxView WidthRequest="4" HeightRequest="30" BackgroundColor="#4A3A31"
+                         HorizontalOptions="Start" VerticalOptions="Start"/>
+
+                <BoxView WidthRequest="30" HeightRequest="4" BackgroundColor="#4A3A31"
+                         HorizontalOptions="End" VerticalOptions="Start"/>
+                <BoxView WidthRequest="4" HeightRequest="30" BackgroundColor="#4A3A31"
+                         HorizontalOptions="End" VerticalOptions="Start"/>
+
+                <BoxView WidthRequest="30" HeightRequest="4" BackgroundColor="#4A3A31"
+                         HorizontalOptions="Start" VerticalOptions="End"/>
+                <BoxView WidthRequest="4" HeightRequest="30" BackgroundColor="#4A3A31"
+                         HorizontalOptions="Start" VerticalOptions="End"/>
+
+                <BoxView WidthRequest="30" HeightRequest="4" BackgroundColor="#4A3A31"
+                         HorizontalOptions="End" VerticalOptions="End"/>
+                <BoxView WidthRequest="4" HeightRequest="30" BackgroundColor="#4A3A31"
+                         HorizontalOptions="End" VerticalOptions="End"/>
+            </Grid>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

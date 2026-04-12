@@ -1,0 +1,40 @@
+﻿@model TourGuideAdmin.Models.POI
+
+@{
+    ViewData["Title"] = "Xóa Địa điểm";
+}
+
+<div class="qr-page-header" data-watermark="DELETE" style="background:linear-gradient(135deg,#3a1a0e 0%,#5a2010 60%,#c0392b 100%);">
+    <h2>🗑️ Xóa Địa điểm</h2>
+    <p>Bạn có chắc chắn muốn xóa địa điểm này? Hành động không thể hoàn tác.</p>
+</div>
+
+<div class="qr-card" style="border-color:#f5c6c0;">
+    <div style="background:#fdecea;border:1px solid #f5c6c0;color:#962d22;padding:14px 18px;border-radius:10px;margin-bottom:20px;font-weight:600;">
+        ⚠️ Cảnh báo: Toàn bộ dữ liệu liên quan đến địa điểm này sẽ bị xóa vĩnh viễn.
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <img src="~/images/pois/@Model.ImageUrl" class="card-img-top" alt="@Model.Name_VI" style="max-width:500px;width:100%;border-radius:12px;border:1px solid var(--qr-border);" />
+    }
+    else
+    {
+        <div class="bg-light text-center d-flex align-items-center justify-content-center" style="height: 250px;">
+            <span class="text-muted">📷 Chưa có hình ảnh</span>
+        </div>
+    }
+
+    <div class="qr-info-row"><div class="lbl">Mã ID</div><div class="val">#@Model.Id</div></div>
+    <div class="qr-info-row"><div class="lbl">Tên (VI)</div><div class="val" style="font-weight:600;">@Model.Name_VI</div></div>
+    <div class="qr-info-row"><div class="lbl">Thuộc Tour</div><div class="val">Tour #@Model.TourId</div></div>
+    <div class="qr-info-row"><div class="lbl">Tọa độ</div><div class="val">@Model.Latitude, @Model.Longitude</div></div>
+
+    <form asp-action="Delete" class="qr-form" style="margin-top:20px;">
+        <input type="hidden" asp-for="Id" />
+        <div class="qr-form-actions">
+            <button type="submit" class="btn-qr-danger">🗑️ Xác nhận xóa</button>
+            <a asp-action="Index" class="btn-qr-outline">← Hủy</a>
+        </div>
+    </form>
+</div>

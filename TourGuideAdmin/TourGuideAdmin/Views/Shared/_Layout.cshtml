@@ -1,0 +1,68 @@
+﻿@{
+    var ctx = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var act = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    string Active(string c, string a = "")
+        => (ctx == c && (string.IsNullOrEmpty(a) || act == a)) ? "active" : "";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TourGuideAdmin</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TourGuideAdmin.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-theme.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="d-flex">
+
+        <aside class="qr-sidebar">
+            <h4 class="brand">🧭 Tour Guide</h4>
+            <p class="brand-sub">Admin Panel</p>
+            <hr class="brand-sep" />
+
+            <ul class="nav-list">
+                <li>
+                    <a class="@Active("Home", "Index")"
+                           asp-controller="Home" asp-action="Index">
+                        <span class="ico">🏠</span> Trang chủ
+                    </a>
+                </li>
+                <li>
+                    <a class="@Active("POIs")"
+                           asp-controller="POIs" asp-action="Index">
+                        <span class="ico">📍</span> Quản lý Địa điểm
+                    </a>
+                </li>
+                <li>
+                    <a class="@Active("Tours")"
+                           asp-controller="Tours" asp-action="Index">
+                        <span class="ico">🗺️</span> Quản lý Tour
+                    </a>
+                </li>
+                <li>
+                    <a class="@Active("QR")"
+                           asp-controller="QR" asp-action="Index">
+                        <span class="ico">📲</span> Quản lý Mã QR
+                    </a>
+                </li>
+                <li>
+                    <a class="@Active("Home", "Privacy")"
+                           asp-controller="Home" asp-action="Privacy">
+                        <span class="ico">🔒</span> Chính sách
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="qr-main">
+            @RenderBody()
+        </main>
+
+    </div>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
