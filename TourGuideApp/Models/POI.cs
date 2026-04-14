@@ -22,8 +22,8 @@ namespace TourGuideApp.Models
         public int TourId { get; set; }
 
         // 👇 CÁC CỘT DỮ LIỆU ĐA NGÔN NGỮ 👇
-        public string Name_VI { get; set; }
-        public string Name_EN { get; set; }
+        public string Name_VI { get; set; } // Tiếng Việt
+        public string Name_EN { get; set; } // Tiếng Anh
         public string Name_ZH { get; set; } // Tiếng Trung
         public string Name_KO { get; set; } // Tiếng Hàn
         public string Name_JA { get; set; } // Tiếng Nhật
@@ -103,7 +103,7 @@ namespace TourGuideApp.Models
                 }
 
                 // 3. NẾU MỚI CHỈ CÓ TÊN FILE VÀ ĐANG CÓ MẠNG (Lấy từ Server của sếp)
-                return $"http://192.168.1.229/images/pois/{ImageUrl}";
+                return $"http://10.125.54.45/images/pois/{ImageUrl}";
             }
         }
 

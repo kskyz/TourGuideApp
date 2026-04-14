@@ -14,7 +14,7 @@ namespace TourGuideApp.Services
         {
             _httpClient = new HttpClient();
             // ⚠️ IP máy tính của sếp
-            _httpClient.BaseAddress = new Uri("http://192.168.1.229:5136/");
+            _httpClient.BaseAddress = new Uri("http://10.125.54.45:5136/"); 
             _httpClient.Timeout = TimeSpan.FromSeconds(3); // 🌟 Khiên chống đơ máy
         }
 
