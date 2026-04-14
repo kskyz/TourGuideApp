@@ -11,6 +11,7 @@ namespace TourGuideAdmin.Models
         // 👇 Đổi dòng này thành DbSet<POI>
         public DbSet<POI> POIs { get; set; }
         public DbSet<Tour> Tours { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,7 +23,7 @@ namespace TourGuideAdmin.Models
                 new Tour { Id = 2, Name_VI = "Khám phá Văn Hóa", Name_EN = "Cultural Discovery", Name_ZH = "文化探索", Name_KO = "문화 탐험", Name_JA = "文化発見" }
             );
 
-            // 2. NẠP DỮ LIỆU POI MẪ (Bắt buộc phải có Id)
+            // 2. NẠP DỮ LIỆU POI MẪU CỦA BẠN (Bắt buộc phải có Id)
             modelBuilder.Entity<POI>().HasData(
                 // --- TOUR 1 ---
                 new POI { Id = 1, TourId = 1, Name_VI = "Dinh Độc Lập", Name_EN = "Independence Palace", Name_ZH = "独立宫", Name_KO = "독립궁", Name_JA = "統一会堂", Latitude = 10.776889, Longitude = 106.695083, TriggerRadius = 100, Description_VI = "Nơi lưu giữ dấu ấn lịch sử hào hùng...", Priority = 1, IsFavorite = false, ImageUrl = "img_dinh_doc_lap.jpg" },

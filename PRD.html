@@ -1,0 +1,1086 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRD - Vĩnh Khánh Auto-Narration System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Light Theme Colors */
+            --bg-main: #F8FAFC; /* Slate 50 */
+            --bg-card: #FFFFFF;
+            --bg-sidebar: #FFFFFF;
+            --primary: #6366F1; /* Indigo 500 */
+            --primary-hover: #4F46E5; /* Indigo 600 */
+            --primary-light: #EEF2FF; /* Indigo 50 */
+            --accent-cyan: #06B6D4; /* Cyan 500 */
+            --accent-purple: #A855F7; /* Purple 500 */
+            --text-main: #0F172A; /* Slate 900 */
+            --text-muted: #475569; /* Slate 600 */
+            --text-light: #94A3B8; /* Slate 400 */
+            --border-color: #E2E8F0; /* Slate 200 */
+            /* Shadows & Effects */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            color: var(--text-main);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        strong {
+            color: var(--text-main);
+        }
+
+        .vi-title {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Top Navbar */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* Main Layout */
+        .layout-wrapper {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Sidebar (Table of Contents) */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 60px; /* Below navbar */
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            padding: 2rem;
+            border-right: 1px solid var(--border-color);
+            background: var(--bg-sidebar);
+        }
+
+            .sidebar::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            .sidebar::-webkit-scrollbar-thumb {
+                background: var(--border-color);
+                border-radius: 4px;
+            }
+
+            .sidebar h4 {
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                color: var(--text-light);
+                margin-bottom: 1rem;
+            }
+
+        .toc-list {
+            list-style: none;
+        }
+
+            .toc-list li {
+                margin-bottom: 0.5rem;
+            }
+
+            .toc-list a {
+                display: block;
+                text-decoration: none;
+                color: var(--text-muted);
+                font-size: 0.95rem;
+                padding: 0.4rem 0.8rem;
+                border-radius: 6px;
+                transition: all 0.2s ease;
+                border-left: 2px solid transparent;
+            }
+
+                .toc-list a:hover {
+                    background: var(--bg-main);
+                    color: var(--primary);
+                }
+
+                .toc-list a.active {
+                    color: var(--primary);
+                    background: var(--primary-light);
+                    border-left-color: var(--primary);
+                    font-weight: 500;
+                }
+
+        /* Main Content */
+        .content {
+            flex-grow: 1;
+            padding: 2rem 4rem 4rem 4rem;
+            min-width: 0;
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 3rem 0 4rem;
+            text-align: center;
+        }
+
+            .hero h1 {
+                margin-bottom: 1rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+        /* Cards (Light theme with hover lift) */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+            .glass-card:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow-card-hover);
+                border-color: var(--primary-light);
+            }
+
+        /* Diagrams & Code Blocks */
+        .code-block {
+            background: #1E293B; /* Kept dark for readability */
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #F8FAFC;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .diagram-box {
+            background: var(--primary-light);
+            background-image: radial-gradient(#6366F1 0.5px, transparent 0.5px);
+            background-size: 10px 10px;
+            border: 1px dashed var(--primary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            overflow-x: auto;
+            box-shadow: var(--shadow-sm);
+        }
+
+            .diagram-box pre {
+                font-family: 'JetBrains Mono', monospace;
+                color: var(--primary);
+                line-height: 1.3;
+                margin: 0;
+                text-align: left;
+                display: inline-block;
+                font-weight: 500;
+            }
+
+        .diagram-explanation {
+            background: #FFFFFF;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            box-shadow: var(--shadow-sm);
+            border-top: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: var(--bg-main);
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        tr:hover td {
+            background: var(--primary-light);
+        }
+
+        /* Timeline / Flow UI */
+        .timeline {
+            border-left: 2px solid var(--border-color);
+            margin: 2rem 0 2rem 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .timeline-step {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+            .timeline-step::before {
+                content: '';
+                position: absolute;
+                left: -2.45rem;
+                top: 0.2rem;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: var(--bg-card);
+                border: 3px solid var(--primary);
+                box-shadow: 0 0 0 3px var(--primary-light);
+            }
+
+        .step-title {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.2rem;
+        }
+
+        /* Tags/Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--primary-light);
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+            .badge.get {
+                background: #ECFDF5;
+                color: #059669;
+            }
+
+            .badge.post {
+                background: #EFF6FF;
+                color: #2563EB;
+            }
+
+        /* Stats Card */
+        .stat-card {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* Section Spacing */
+        section {
+            padding: 3rem 0;
+            scroll-margin-top: 80px; /* Ensures header doesn't cover section title */
+        }
+
+            section:not(:last-child) {
+                border-bottom: 1px dashed var(--border-color);
+            }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            /* Hide sidebar on mobile */
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 2rem 0;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <nav>
+        <div class="nav-brand">
+            <span class="gradient-text">Tour Guide App</span>
+            <span style="color: var(--text-light); font-weight: 400; margin-left: 8px;">- Vĩnh Khánh</span>
+        </div>
+    </nav>
+
+    <div class="layout-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <h4>Mục lục</h4>
+            <ul class="toc-list">
+                <li><a href="#overview">1. System Overview</a></li>
+                <li><a href="#mvp">2. MVP Features</a></li>
+                <li><a href="#flow">3. System Flow</a></li>
+                <li><a href="#architecture">4. Architecture</a></li>
+                <li><a href="#diagrams">5. Diagrams</a></li>
+                <li><a href="#use-cases">6. Use Cases</a></li>
+                <li><a href="#db-schema">7. Database Schema</a></li>
+                <li><a href="#api">8. API Design</a></li>
+                <li><a href="#components">9. Core Components</a></li>
+                <li><a href="#cms">10. CMS & Analytics</a></li>
+                <li><a href="#ui-ux">11. UI/UX</a></li>
+                <li><a href="#detailed">12. Detailed Features</a></li>
+                <li><a href="#stories">13. User Stories</a></li>
+                <li><a href="#non-functional">14. Non-Functional</a></li>
+                <li><a href="#conclusion">15. Conclusion</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Hero Section -->
+            <header class="hero">
+                <h1 class="gradient-text">Hệ thống Thuyết minh Tự động</h1>
+                <p>Nền tảng SaaS cung cấp trải nghiệm âm thanh đa ngôn ngữ dựa trên vị trí (Geofencing). Tự động phát thuyết minh về văn hóa, lịch sử và ẩm thực khi du khách dạo bước qua các điểm dừng chân.</p>
+                <div class="grid-3" style="margin-top: 3rem;">
+                    <div class="glass-card stat-card">
+                        <div class="stat-value">.NET</div>
+                        <div class="stat-label">MAUI & ASP.NET Core</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-value">GPS</div>
+                        <div class="stat-label">Offline Geofencing</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-value">5+</div>
+                        <div class="stat-label">Languages Supported</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 1. System Overview -->
+            <section id="overview">
+                <h2>1. System Overview <span class="vi-title">(Tổng quan hệ thống)</span></h2>
+                <div class="glass-card">
+                    <h3>Mô tả hệ thống</h3>
+                    <p>Hệ thống cung cấp trải nghiệm thuyết minh tự động (Auto-narration) qua thiết bị di động cho du khách khi tham quan phố ẩm thực Vĩnh Khánh. Dựa trên vị trí GPS (Geofencing), ứng dụng sẽ tự động phát các đoạn audio giới thiệu về lịch sử, văn hóa, và các món ăn đặc trưng của từng quán/khu vực khi du khách đi ngang qua.</p>
+
+                    <div class="grid-2">
+                        <div>
+                            <h3>Problem (Vấn đề)</h3>
+                            <ul style="list-style-type: square; margin-left: 1.5rem; color: var(--text-muted);">
+                                <li>Phố Vĩnh Khánh ồn ào, đông đúc, du khách nước ngoài khó tiếp cận thông tin văn hóa ẩm thực.</li>
+                                <li>Thiếu hướng dẫn viên tại chỗ hoặc rào cản ngôn ngữ với chủ quán.</li>
+                                <li>Trải nghiệm xem bản đồ truyền thống khiến du khách mất tập trung vào cảnh quan thực tế.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Goal (Mục tiêu)</h3>
+                            <ul style="list-style-type: square; margin-left: 1.5rem; color: var(--text-muted);">
+                                <li>Tạo ra một "Virtual Tour Guide" rảnh tay (Hands-free experience).</li>
+                                <li>Cung cấp nội dung đa ngôn ngữ (Anh, Việt, Hàn, Nhật, Trung).</li>
+                                <li>Hoạt động ổn định ngay cả khi kết nối mạng kém (Offline-first approach).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. MVP Features -->
+            <section id="mvp">
+                <h2>2. MVP Features <span class="vi-title">(Chức năng chính)</span></h2>
+                <div class="grid-3">
+                    <div class="glass-card">
+                        <h3>📱 Mobile App (Client)</h3>
+                        <p><span class="badge">Core</span> GPS tracking ngầm.</p>
+                        <p><span class="badge">Core</span> Geofencing trigger audio tự động.</p>
+                        <p><span class="badge">Feature</span> Scan QR Code để phát audio thủ công.</p>
+                        <p><span class="badge">Arch</span> Cơ chế Offline-first (Tải package trước khi tour bắt đầu).</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3>⚙️ CMS (Admin/Shop)</h3>
+                        <p><span class="badge">Data</span> Quản lý POI (Point of Interest) & Geofence Polygon.</p>
+                        <p><span class="badge">Media</span> Upload & Quản lý Audio files.</p>
+                        <p><span class="badge">Content</span> Quản lý bản dịch đa ngôn ngữ.</p>
+                        <p><span class="badge">Logic</span> Thiết lập Tour/Route logic.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3>📊 Analytics</h3>
+                        <p><span class="badge">Report</span> Heatmap: Khu vực khách dừng chân lâu nhất.</p>
+                        <p><span class="badge">Data</span> Tracking user movement (Dữ liệu ẩn danh định danh qua SessionID).</p>
+                        <p><span class="badge">Metrics</span> Top POI được nghe nhiều nhất.</p>
+                        <p><span class="badge">Metrics</span> Thời lượng nghe trung bình (Listening time).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. System Flow -->
+            <section id="flow">
+                <h2>3. System Flow <span class="vi-title">(Luồng hệ thống / Logic cốt lõi)</span></h2>
+                <p>Luồng xử lý từ lúc khởi động app đến khi phát audio tự động. Yêu cầu khắt khe về việc xử lý trùng lặp và ưu tiên phát.</p>
+
+                <div class="glass-card">
+                    <div class="timeline">
+                        <div class="timeline-step">
+                            <div class="step-title">Bước 1: App Initialization & Data Sync</div>
+                            <p class="text-muted">App khởi động. Gọi API load toàn bộ metadata POI và Geofence data từ Server. Lưu trữ cục bộ vào <strong>SQLite</strong>. User chọn "Download Tour Audio" để tải file .mp3 về local storage.</p>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="step-title">Bước 2: Background GPS Tracking</div>
+                            <p class="text-muted">Hệ thống kích hoạt Service chạy ngầm. Thu thập tọa độ GPS mỗi 3-5 giây. Sử dụng thuật toán <em>Haversine</em> hoặc Native Geofencing API để tính khoảng cách đến các điểm POI.</p>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="step-title">Bước 3: Geofence Trigger Event</div>
+                            <p class="text-muted">Tọa độ GPS rơi vào bán kính Geofence (VD: 15m xung quanh quán Ốc Oanh). Event <code>OnGeofenceEnter</code> được kích hoạt.</p>
+
+                            <div class="code-block" style="margin-top: 1rem;">
+<pre><code>// Pseudocode Trigger Logic
+IF (Distance(User, POI) <= POI.Radius) THEN
+    TriggerEvent(POI_ID)
+END IF</code></pre>
+                            </div>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="step-title">Bước 4: Validation & Playback Logic (CRITICAL)</div>
+                            <p class="text-muted">Khi event được trigger, hệ thống phải kiểm tra điều kiện khắt khe trước khi phát để tránh spam audio:</p>
+                            <div class="code-block" style="margin-top: 1rem;">
+<pre><code>FUNCTION HandleGeofenceEnter(POI_ID)
+    // 1. Kiểm tra lịch sử phát
+    IF (Session.PlayedPOIs.Contains(POI_ID) AND TimeSinceLastPlay < 24_HOURS) THEN
+        RETURN // Bỏ qua, tránh phát lại liên tục khi user đi vòng quanh
+    END IF
+
+    // 2. Kiểm tra trạng thái Audio Engine
+    IF (AudioPlayer.IsPlaying) THEN
+        CurrentPOI = AudioPlayer.GetCurrentPOI()
+        
+        // 3. Xử lý Priority (Ưu tiên)
+        IF (POI_ID.Priority > CurrentPOI.Priority) THEN
+            AudioPlayer.Stop() // Ngắt bài cũ (ví dụ: Thông báo khẩn cấp/điểm chính yếu)
+            AudioQueue.Clear()
+        ELSE
+            AudioQueue.Enqueue(POI_ID) // Cho vào hàng đợi
+            RETURN
+        END IF
+    END IF
+
+    // 4. Lấy dữ liệu và Phát
+    AudioFile = SQLite.GetAudio(POI_ID, CurrentLanguage)
+    AudioPlayer.Play(AudioFile)
+    
+    // 5. Ghi nhận lịch sử
+    Session.PlayedPOIs.Add(POI_ID)
+    LogAnalyticsAsync(POI_ID, EventType="AutoPlay_Started")
+END FUNCTION</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Architecture -->
+            <section id="architecture">
+                <h2>4. Architecture <span class="vi-title">(Kiến trúc hệ thống)</span></h2>
+                <div class="glass-card">
+                    <p>Hệ thống được thiết kế theo kiến trúc Client-Server với nguyên lý <strong>Offline-First</strong> tại phía Client.</p>
+                    <div class="grid-2">
+                        <div>
+                            <h3>Công nghệ sử dụng</h3>
+                            <ul style="list-style-type: square; margin-left: 1.5rem;">
+                                <li><strong>Mobile App:</strong> .NET MAUI (C#). Chạy đa nền tảng iOS/Android từ một codebase. Tích hợp native GPS dễ dàng.</li>
+                                <li><strong>Backend API:</strong> ASP.NET Core 8 Web API. Xử lý logic nghiệp vụ, xác thực, trả về JSON.</li>
+                                <li><strong>Database (Server):</strong> SQL Server. Lưu trữ toàn bộ dữ liệu hệ thống, phân quyền, Analytics.</li>
+                                <li><strong>Local Storage (Client):</strong> SQLite-net. Lưu POI metadata và trạng thái app offline.</li>
+                                <li><strong>File Storage:</strong> Azure Blob Storage hoặc AWS S3 (Lưu audio files).</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Tại sao cần Offline-First?</h3>
+                            <p>Khu vực phố Vĩnh Khánh rất đông người vào buổi tối, mạng 4G/5G thường xuyên bị nghẽn. Du khách quốc tế có thể không có SIM 4G data lớn. Việc tải trước Audio và lưu tọa độ Geofence xuống SQLite giúp app hoạt động trơn tru, không độ trễ, và không phụ thuộc kết nối mạng lúc đang trải nghiệm.</p>
+
+                            <h3 style="margin-top:1rem;">Khi nào dùng Server vs Local?</h3>
+                            <ul style="list-style-type: square; margin-left: 1.5rem;">
+                                <li><strong>Local (SQLite):</strong> Trigger logic, đọc nội dung POI, phát audio.</li>
+                                <li><strong>Server (API):</strong> Sync dữ liệu ban đầu, gửi Analytics log (âm thầm khi có mạng), tải bản cập nhật nội dung.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Diagrams -->
+            <section id="diagrams">
+                <h2>5. Diagrams <span class="vi-title">(Sơ đồ kiến trúc)</span></h2>
+
+                <!-- Architecture Diagram -->
+                <h3>5.1. System Architecture Diagram</h3>
+                <div class="diagram-box">
+<pre><code>
+    [ .NET MAUI Mobile App ]
+    +------------------------+
+    |   UI / Map View        |
+    |   Geofencing Engine    |
+    |   Audio Player         |
+    |------------------------|
+    |  [ SQLite ] (Local DB) | <--- (1) Sync Metadata & Geofence
+                                    | [ File System ] | <--- (2) Download Audio .mp3
+    +------------------------+
+             |      ^
+  (3) Async  |      |
+  Log Event  |      | REST API (HTTPS)
+             v      |
+    +------------------------+
+    |  ASP.NET Core Web API  | <--- (4) CMS / Dashboard Web
+    |------------------------|      (React / Blazor)
+    |  Auth | Sync | Analytics|
+    +------------------------+
+             |      |
+             v      v
+      [ SQL Server ]  [ Blob Storage ]
+       (RDBMS Data)    (Audio Files)
+</code></pre>
+                </div>
+                <div class="diagram-explanation">
+                    <strong>Thành phần & Luồng dữ liệu:</strong> App MAUI (Client) kết nối với ASP.NET Core API qua REST. Dữ liệu (1) Metadata POI được đồng bộ về SQLite. (2) File Audio tải từ Blob Storage về thiết bị. (3) Khi user di chuyển, log (Heatmap, Listening time) được đẩy bất đồng bộ lên Server. (4) Admin dùng CMS tương tác với API để quản lý.<br><br>
+                    <strong>Tại sao thiết kế vậy:</strong> Tách biệt Blob Storage và SQL Server giúp tối ưu chi phí băng thông. Đưa SQLite vào MAUI đảm bảo nguyên lý Offline-first, API chỉ đóng vai trò Data Provider và Collector, không xử lý real-time trigger.
+                </div>
+
+                <!-- Flow Diagram -->
+                <h3>5.2. Geofence Logic Flow Diagram</h3>
+                <div class="diagram-box">
+<pre><code>
+      [ GPS Location Update ]
+               |
+               v
+      +-------------------+
+      | Is User in Region?| ---- No ---> [ Wait Next Update ]
+      +-------------------+
+               | Yes
+               v
+      +-------------------+
+      | Already Played in | ---- Yes --> [ Ignore / End ]
+      | last X hours?     |
+      +-------------------+
+               | No
+               v
+      +-------------------+
+      | Is Audio Playing? | ---- Yes --> [ Check Priority ] -- High -> [ Stop Current, Play New ]
+      +-------------------+                 |
+               | No                         -- Low --> [ Add to Queue ]
+               v
+      +-------------------+
+      | Load Audio Local  |
+      |   & Play (MP3)    |
+      +-------------------+
+               |
+               v
+      [ Log Analytics Async ]
+</code></pre>
+                </div>
+                <div class="diagram-explanation">
+                    <strong>Thành phần & Luồng dữ liệu:</strong> Sơ đồ mô tả logic tuần tự khi có event GPS. Đi qua các block quyết định (If/Else) về trạng thái phát, trạng thái hệ thống audio hiện tại, và ưu tiên (Priority). Cuối cùng kết thúc bằng việc Play và Log.<br><br>
+                    <strong>Tại sao thiết kế vậy:</strong> Logic Check Priority rất quan trọng ở phố ẩm thực vì các POI nằm sát nhau. Nếu không có hàng đợi (Queue) hoặc ngắt (Stop), nhiều audio sẽ đè lên nhau gây nhiễu. "Already Played" giúp tránh spam khi user đứng yên hoặc đi lặp lại một đoạn đường.
+                </div>
+
+                <!-- Class Diagram -->
+                <h3>5.3. Core Entity Class Diagram (Local & Server)</h3>
+                <div class="diagram-box">
+<pre><code>
+  +------------------+         +-----------------------+
+  |       POI        | 1     * |     Translation       |
+  +------------------+---------+-----------------------+
+  | + Id: Guid       |         | + Id: Guid            |
+  | + Name: string   |         | + POIId: Guid         |
+  | + Lat: float     |         | + LangCode: string    |
+  | + Lng: float     |         | + Title: string       |
+  | + Radius: int    |         | + Description: string |
+  | + Priority: int  |         +-----------------------+
+  | + CategoryId: int|                   | 1
+  +------------------+                   |
+                                         | 1
+                               +-----------------------+
+                               |      AudioFile        |
+                               +-----------------------+
+                               | + Id: Guid            |
+                               | + TranslationId: Guid |
+                               | + FileUrl: string     |
+                               | + Duration: int       |
+                               | + Checksum: string    |
+                               +-----------------------+
+</code></pre>
+                </div>
+                <div class="diagram-explanation">
+                    <strong>Thành phần:</strong> Mối quan hệ giữa Điểm thú vị (POI) -> Bản dịch ngôn ngữ (Translation) -> File âm thanh tương ứng (AudioFile). 1 POI có nhiều ngôn ngữ, mỗi ngôn ngữ của POI đó có 1 file Audio đính kèm.<br><br>
+                    <strong>Tại sao thiết kế vậy:</strong> Tách biệt Translation và AudioFile cho phép dễ dàng cập nhật text (để hiển thị trên app) mà không cần record lại audio, hoặc update file audio độc lập. <code>Checksum</code> giúp App kiểm tra xem file audio trên máy có bị cũ so với server không để tải lại.
+                </div>
+            </section>
+
+            <!-- 6. Use Cases -->
+            <section id="use-cases">
+                <h2>6. Use Cases <span class="vi-title">(Ca sử dụng)</span></h2>
+                <div class="grid-3">
+                    <div class="glass-card">
+                        <h3>👨‍🦯 Tourist (Du khách)</h3>
+                        <p><strong>Mô tả:</strong> Khám phá phố Vĩnh Khánh, nghe thuyết minh.</p>
+                        <p><strong>Trigger:</strong> Mở app, tải tour, cất điện thoại vào túi.</p>
+                        <p><strong>Flow:</strong> App theo dõi ngầm -> Tới khu ốc -> Tự động phát audio "Lịch sử ngõ ốc Vĩnh Khánh" tiếng Anh -> Tới quán Ốc Oanh -> Phát "Món ốc hương xào bơ cay đặc sản" -> User nghe xong, app tự gửi log thời gian nghe.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3>👨‍🍳 Shop Owner (Chủ quán)</h3>
+                        <p><strong>Mô tả:</strong> Đóng góp nội dung cho quán của mình.</p>
+                        <p><strong>Trigger:</strong> Đăng nhập CMS (Phân quyền Owner).</p>
+                        <p><strong>Flow:</strong> Chọn POI quán mình -> Cập nhật Text giới thiệu món mới -> Yêu cầu Admin record Audio hoặc tự upload file mp3 -> Xem thống kê: Bao nhiêu người đã đi qua và nghe audio quán mình tháng này.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3>👨‍💻 Admin (Hệ thống)</h3>
+                        <p><strong>Mô tả:</strong> Quản trị toàn bộ nền tảng.</p>
+                        <p><strong>Trigger:</strong> Đăng nhập Dashboard.</p>
+                        <p><strong>Flow:</strong> Vẽ Geofence (Polygon/Circle) trên bản đồ cho POI mới -> Gắn file Audio đa ngôn ngữ -> Xem Heatmap để biết luồng đi của khách du lịch tập trung ở đầu phố hay cuối phố.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. Database Schema -->
+            <section id="db-schema">
+                <h2>7. Database Schema <span class="vi-title">(Cấu trúc cơ sở dữ liệu)</span></h2>
+                <div class="glass-card">
+                    <p>Thiết kế tập trung vào tính toàn vẹn dữ liệu và khả năng truy xuất đa ngôn ngữ nhanh chóng.</p>
+
+                    <div class="diagram-box">
+<pre><code>
+[Users]          [POIs]                 [Tours]
+- Id (PK)        - Id (PK)              - Id (PK)
+- Role           - Lat, Lng             - Name
+- Username       - RadiusMeter          - IsActive
+                 - Priority
+                 - TourId (FK)
+
+[Translations]           [AudioFiles]
+- Id (PK)                - Id (PK)
+- POIId (FK)             - TranslationId (FK)
+- LangCode (e.g., 'en')  - FilePath (Cloud)
+- Name                   - FileSize
+- ContentHtml            - DurationSec
+- Unique(POIId, LangCode)
+
+[UserSessions]            [ListeningHistory]
+- Id (PK)                 - Id (PK)
+- DeviceId                - SessionId (FK)
+- StartTime               - POIId (FK)
+- EndTime                 - LangCode
+                          - ListenedSec
+                          - TriggerType ('GPS' or 'QR')
+                          - CreatedAt
+</code></pre>
+                    </div>
+
+                    <div class="diagram-explanation">
+                        <strong>Quan hệ bảng & Tại sao thiết kế vậy:</strong>
+                        <ul style="list-style-type: square; margin-left: 1.5rem;">
+                            <li><code>Translations</code> nối với <code>POIs</code> (1-N). Ràng buộc Unique Key trên <code>(POIId, LangCode)</code> đảm bảo mỗi POI chỉ có duy nhất 1 bản dịch tiếng Anh, 1 tiếng Việt...</li>
+                            <li><code>AudioFiles</code> tách riêng khỏi Translation giúp tái sử dụng text nhưng có thể update file audio chuẩn chất lượng cao sau.</li>
+                            <li><code>ListeningHistory</code> thu thập dữ liệu thô (Raw Event Data) lưu trữ từng sự kiện nghe của user. Định danh qua <code>SessionId</code> (tạo random mỗi lần mở app) thay vì UserId để <strong>bảo vệ quyền riêng tư</strong> của du khách (Không yêu cầu đăng nhập).</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. API Design -->
+            <section id="api">
+                <h2>8. API Design <span class="vi-title">(Thiết kế API)</span></h2>
+                <div class="glass-card">
+                    <p>Các API giao tiếp giữa Mobile App và .NET Core Backend.</p>
+
+                    <div style="margin-top: 1.5rem;">
+                        <div class="flex items-center gap-4" style="margin-bottom: 0.5rem;">
+                            <span class="badge get">GET</span>
+                            <strong style="font-family: monospace; color: var(--text-main);">/api/v1/tours/{tourId}/sync</strong>
+                        </div>
+                        <div class="code-block">
+<pre><code>// Response JSON (App gọi lúc bắt đầu để nạp vào SQLite)
+{
+  "tourId": "uuid",
+  "version": "1.0.4",
+  "pois": [
+    {
+      "id": "poi_123",
+      "lat": 10.7612, "lng": 106.7021,
+      "radius": 20, "priority": 1,
+      "content": {
+         "vi": { "title": "...", "audioUrl": "https://..." },
+         "en": { "title": "...", "audioUrl": "https://..." }
+      }
+    }
+  ]
+}</code></pre>
+                        </div>
+                        <p class="text-muted"><strong>Sử dụng:</strong> Gọi 1 lần duy nhất khi app khởi động hoặc khi ấn "Update Content". Client tự so sánh <code>version</code> để quyết định tải hay không.</p>
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <div class="flex items-center gap-4" style="margin-bottom: 0.5rem;">
+                            <span class="badge post">POST</span>
+                            <strong style="font-family: monospace; color: var(--text-main);">/api/v1/analytics/bulk-log</strong>
+                        </div>
+                        <div class="code-block">
+<pre><code>// Request JSON (App gửi ngầm định kỳ)
+{
+  "sessionId": "ses_987",
+  "events": [
+    { "poiId": "poi_123", "action": "AUTO_PLAY_FINISH", "timestamp": "2023-10-01T19:00Z" },
+    { "poiId": "poi_456", "action": "MANUAL_QR_PLAY", "timestamp": "2023-10-01T19:15Z" }
+  ]
+}</code></pre>
+                        </div>
+                        <p class="text-muted"><strong>Sử dụng:</strong> App MAUI sẽ lưu cache các event này vào SQLite. Khi có mạng WiFi hoặc 4G ổn định, Background Worker sẽ push cục (bulk) lên server để tiết kiệm pin và băng thông. API này nạp dữ liệu cho Heatmap và Reports.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. Core Components -->
+            <section id="components">
+                <h2>9. Core Components <span class="vi-title">(Thành phần cốt lõi)</span></h2>
+                <div class="grid-2">
+                    <div class="glass-card">
+                        <h3>📍 Geofence Engine (Native / Haversine)</h3>
+                        <p>Thành phần chịu trách nhiệm tính toán khoảng cách. Do phố Vĩnh Khánh khá hẹp, độ chính xác GPS là yếu tố sống còn.</p>
+                        <ul style="list-style-type: square; margin-left: 1.5rem; color: var(--text-muted);">
+                            <li><strong>Cơ chế:</strong> Không dùng Google Maps API liên tục (tốn phí & pin). Sử dụng <code>Geolocator</code> native của iOS/Android qua MAUI Essentials.</li>
+                            <li><strong>Công thức:</strong> Tính khoảng cách giữa User (Lat1, Lng1) và POI (Lat2, Lng2) bằng công thức <strong>Haversine</strong> cục bộ.</li>
+                            <li><strong>Tối ưu pin:</strong> Dynamic interval. Nếu user ở xa phố Vĩnh Khánh > 5km, ping 10 phút/lần. Nếu cách < 1km, ping 1 phút/lần. Đi vào trong phố: ping 5 giây/lần.</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card">
+                        <h3>🎧 Narration Engine (Queue Manager)</h3>
+                        <p>Bộ não điều phối âm thanh.</p>
+                        <ul style="list-style-type: square; margin-left: 1.5rem; color: var(--text-muted);">
+                            <li><strong>State Machine:</strong> Có các trạng thái <code>Idle</code>, <code>Playing</code>, <code>Paused</code> (khi có cuộc gọi đến).</li>
+                            <li><strong>Deduplication Logic:</strong> Duy trì một <code>HashSet<Guid></code> trong memory chứa các POI đã phát trong session hiện tại. Nếu ID đã tồn tại -> Reject play.</li>
+                            <li><strong>Queueing:</strong> Dùng <code>ConcurrentQueue</code>. Nếu user chạy xe máy nhanh qua 3 quán, thay vì phát 3 bài cùng lúc, nó nhét vào hàng đợi và phát bài của quán ưu tiên cao nhất, bỏ qua các quán nhỏ.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10. CMS & Analytics -->
+            <section id="cms">
+                <h2>10. CMS & Analytics <span class="vi-title">(Quản trị & Phân tích)</span></h2>
+                <div class="glass-card">
+                    <div class="grid-2">
+                        <div>
+                            <h3>Heatmap & Tracking</h3>
+                            <p>Dữ liệu từ API <code>/bulk-log</code> được SQL Server xử lý và trực quan hóa lên màn hình Dashboard bằng thư viện bản đồ (vd: Mapbox/Leaflet).</p>
+                            <p><strong>Logic:</strong> Mỗi khi event GPS được ping (kể cả không phát audio), hệ thống lưu tọa độ. CMS gom nhóm (Clustering) các điểm này. Chỗ nào mật độ cao -> hiển thị màu đỏ (Hotspot). Giúp Ban quản lý phố biết khu vực nào hay bị tắc nghẽn hoặc thu hút khách nhất.</p>
+                        </div>
+                        <div>
+                            <h3>Reports & Metrics</h3>
+                            <table>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Nguồn Dữ Liệu / Tính toán</th>
+                                </tr>
+                                <tr>
+                                    <td>Top POI</td>
+                                    <td>Count(Action = 'AUTO_PLAY_START') group by POI</td>
+                                </tr>
+                                <tr>
+                                    <td>Drop-off rate</td>
+                                    <td>So sánh số lượng 'AUTO_PLAY_START' với 'AUTO_PLAY_FINISH'. Nếu khách hay tắt giữa chừng -> nội dung nhàm chán.</td>
+                                </tr>
+                                <tr>
+                                    <td>Ngôn ngữ</td>
+                                    <td>Group Session theo LangCode đã chọn.</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 11. UI/UX -->
+            <section id="ui-ux">
+                <h2>11. UI/UX <span class="vi-title">(Giao diện & Trải nghiệm)</span></h2>
+                <div class="glass-card">
+                    <h3>Màn hình chính: Map-Centric Design</h3>
+                    <p>Khác với app tin tức, app audio guide mở ra là hiển thị bản đồ toàn màn hình. Các POI hiển thị dưới dạng Icon trực quan (Biểu tượng dĩa ốc, ly bia...).</p>
+                    <div class="grid-2">
+                        <div>
+                            <h4>BottomSheet Component</h4>
+                            <p>Khi một Audio đang phát, một "BottomSheet" (bảng nhỏ) tự động trượt lên từ cạnh dưới màn hình hiển thị: Tên quán, Ảnh minh họa, Thanh tiến trình audio (Progress bar), Nút Pause/Play, Nút Read Text (cho người khiếm thính).</p>
+                        </div>
+                        <div>
+                            <h4>Settings (Rất quan trọng)</h4>
+                            <ul style="list-style-type: square; margin-left: 1.5rem; color: var(--text-muted);">
+                                <li><strong>GPS Sensitivity:</strong> Cho phép user chỉnh bán kính trigger (Gần/Vừa/Xa). Mặc định là 15m.</li>
+                                <li><strong>Auto-play Toggle:</strong> Cho phép tắt phát tự động, chuyển sang chế độ "Tap to play" (Chạm vào icon trên map để nghe).</li>
+                                <li><strong>Offline Mode:</strong> Nút "Download All Assets (50MB)" hiển thị rõ ràng trước khi bắt đầu.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 12. Detailed Features -->
+            <section id="detailed">
+                <h2>12. Detailed Features <span class="vi-title">(Chi tiết tính năng)</span></h2>
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Input</th>
+                        <th>Logic / Flow</th>
+                        <th>Output / Edge Case</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Offline Sync</strong></td>
+                        <td>Nhấn "Start Tour"</td>
+                        <td>Kiểm tra SQLite có data chưa. Nếu chưa -> Gọi API Sync -> Tải JSON -> Tải Audio Background.</td>
+                        <td><em>Edge case:</em> Mất mạng giữa chừng -> Resume download khi có mạng lại. Play được các bài đã tải.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>QR Trigger</strong></td>
+                        <td>Quét QR dán tại bàn quán ăn</td>
+                        <td>Camera nhận Deep Link (vd: <code>vkaudio://poi/123</code>). Override mọi Geofence logic. Stop audio hiện tại.</td>
+                        <td>Phát lập tức Audio của POI 123. Dù user đã nghe bài này từ trước qua GPS.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Call Interrupt</strong></td>
+                        <td>Có cuộc gọi điện thoại đến</td>
+                        <td>OS bắn event Audio Focus Loss cho MAUI. App bắt event.</td>
+                        <td>Tự động <code>Pause()</code> audio. Khi cúp máy, tự động <code>Resume()</code>.</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- 13. User Stories -->
+            <section id="stories">
+                <h2>13. User Stories <span class="vi-title">(Câu chuyện người dùng)</span></h2>
+                <div class="glass-card">
+                    <ul style="list-style-type: none; padding: 0;">
+                        <li style="margin-bottom: 1.5rem; padding-left: 1rem; border-left: 3px solid var(--primary);">
+                            "<strong>Là một</strong> du khách Nhật Bản, <strong>tôi muốn</strong> app tự động phát tiếng Nhật khi tôi đi ngang qua quán bún bò, <strong>để</strong> tôi biết nguồn gốc món ăn mà không cần hỏi ai."
+                        </li>
+                        <li style="margin-bottom: 1.5rem; padding-left: 1rem; border-left: 3px solid var(--accent-cyan);">
+                            "<strong>Là một</strong> người dùng tiết kiệm pin/data, <strong>tôi muốn</strong> tải sẵn mọi thứ ở khách sạn, <strong>để</strong> khi ra phố tôi có thể tắt 4G mà vẫn được trải nghiệm Tour."
+                        </li>
+                        <li style="padding-left: 1rem; border-left: 3px solid var(--accent-purple);">
+                            "<strong>Là một</strong> Ban quản lý phố, <strong>tôi muốn</strong> xem bản đồ nhiệt (Heatmap), <strong>để</strong> biết luồng giao thông đi bộ đông nhất ở đâu, từ đó bố trí thùng rác hoặc bảo vệ hợp lý."
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 14. Non-Functional -->
+            <section id="non-functional">
+                <h2>14. Non-Functional <span class="vi-title">(Yêu cầu phi chức năng)</span></h2>
+                <div class="grid-2">
+                    <div class="glass-card">
+                        <h3>⚡ Performance</h3>
+                        <p>- API Sync Response Time < 200ms.</p>
+                        <p>- Geofence Trigger Delay < 1.5 giây (Từ lúc bước vào vùng đến lúc nghe tiếng).</p>
+                        <p>- Kích thước App tải về < 30MB (Không tính content tải thêm).</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3>🔒 Security & Scalability</h3>
+                        <p>- <strong>Security:</strong> App giao tiếp API qua HTTPS. JWT Auth cho Admin CMS. Dữ liệu tracking khách du lịch ẩn danh hoàn toàn (Không lưu sdt, email).</p>
+                        <p>- <strong>Scalability:</strong> Backend thiết kế Stateless, có thể scale ngang (Horizontal scaling) qua Kubernetes/Docker khi có lễ hội ẩm thực lượng khách tăng đột biến.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 15. Conclusion -->
+            <section id="conclusion">
+                <h2>15. Conclusion <span class="vi-title">(Tổng kết & Hướng phát triển)</span></h2>
+                <div class="glass-card">
+                    <p>Hệ thống Thuyết minh tự động cho Phố ẩm thực Vĩnh Khánh (MVP) tập trung giải quyết bài toán cốt lõi: <strong>Trải nghiệm rảnh tay, không giới hạn ngôn ngữ, và hoạt động tốt ở môi trường mạng kém.</strong> Kiến trúc .NET MAUI và SQLite là sự lựa chọn tối ưu cho yêu cầu Offline-first này.</p>
+
+                    <h3 style="margin-top: 1.5rem; color: var(--accent-purple);">🚀 Hướng phát triển Phase 2 (Future)</h3>
+                    <ul style="list-style-type: square; margin-left: 1.5rem; color: var(--text-muted);">
+                        <li><strong>AI Voice Generation (TTS):</strong> Thay vì admin phải thu âm thủ công, tích hợp API của ElevenLabs/Google Cloud TTS để gõ văn bản tiếng Việt tự động sinh ra Audio 5 ngôn ngữ với giọng đọc tự nhiên. Giảm chi phí sản xuất content xuống 90%.</li>
+                        <li><strong>Smart Recommendation:</strong> Dựa vào lịch sử nghe (Ví dụ: khách nghe xong bài Ốc, bỏ qua bài Lẩu), hệ thống dùng Machine Learning gợi ý điểm tiếp theo: "Có một quán hải sản nướng cách bạn 50m, bạn có muốn đến thử?".</li>
+                        <li><strong>AR Navigation:</strong> Kết hợp Camera AR (Augmented Reality) vẽ mũi tên chỉ đường trực tiếp trên màn hình camera đưa khách đến quán ăn đã chọn.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <footer style="text-align: center; padding: 3rem 0 1rem 0; color: var(--text-light); font-size: 0.9rem;">
+                PRD Document &bull; Confidential &bull; Designed for Vĩnh Khánh Auto-Narration Project
+            </footer>
+        </main>
+    </div>
+
+    <!-- Script for TOC ScrollSpy -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-list a');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-10% 0px -85% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>

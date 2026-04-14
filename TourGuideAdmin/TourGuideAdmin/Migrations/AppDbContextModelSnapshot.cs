@@ -23,6 +23,9 @@ namespace TourGuideAdmin.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ApprovalStatus")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Description_EN")
                         .HasColumnType("TEXT");
 
@@ -68,6 +71,9 @@ namespace TourGuideAdmin.Migrations
                     b.Property<string>("Name_ZH")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("OwnerId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Priority")
                         .HasColumnType("INTEGER");
 
@@ -80,6 +86,134 @@ namespace TourGuideAdmin.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("POIs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ApprovalStatus = 0,
+                            Description_VI = "Nơi lưu giữ dấu ấn lịch sử hào hùng...",
+                            ImageUrl = "img_dinh_doc_lap.jpg",
+                            IsFavorite = false,
+                            Latitude = 10.776889000000001,
+                            Longitude = 106.695083,
+                            Name_EN = "Independence Palace",
+                            Name_JA = "統一会堂",
+                            Name_KO = "독립궁",
+                            Name_VI = "Dinh Độc Lập",
+                            Name_ZH = "独立宫",
+                            Priority = 1,
+                            TourId = 1,
+                            TriggerRadius = 100
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ApprovalStatus = 0,
+                            Description_VI = "Công trình kiến trúc Pháp cổ điển...",
+                            ImageUrl = "img_buu_dien.jpg",
+                            IsFavorite = true,
+                            Latitude = 10.779833,
+                            Longitude = 106.70005500000001,
+                            Name_EN = "Saigon Central Post Office",
+                            Name_JA = "サイゴン中央郵便局",
+                            Name_KO = "사이공 중앙 우체국",
+                            Name_VI = "Bưu điện Trung tâm Sài Gòn",
+                            Name_ZH = "西贡中心邮局",
+                            Priority = 2,
+                            TourId = 1,
+                            TriggerRadius = 50
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ApprovalStatus = 0,
+                            Description_VI = "Biểu tượng tôn giáo và kiến trúc của Sài Gòn.",
+                            ImageUrl = "img_nha_tho.jpg",
+                            IsFavorite = false,
+                            Latitude = 10.779785,
+                            Longitude = 106.699017,
+                            Name_EN = "Notre Dame Cathedral",
+                            Name_JA = "サイゴン大教会",
+                            Name_KO = "노트르담 대성당",
+                            Name_VI = "Nhà thờ Đức Bà",
+                            Name_ZH = "圣母大教堂",
+                            Priority = 3,
+                            TourId = 1,
+                            TriggerRadius = 60
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ApprovalStatus = 0,
+                            Description_VI = "Khu chợ sầm uất và lâu đời nhất thành phố.",
+                            ImageUrl = "img_cho_ben_thanh.jpg",
+                            IsFavorite = false,
+                            Latitude = 10.772500000000001,
+                            Longitude = 106.69799999999999,
+                            Name_EN = "Ben Thanh Market",
+                            Name_JA = "ベンタイン市場",
+                            Name_KO = "벤탄 시장",
+                            Name_VI = "Chợ Bến Thành",
+                            Name_ZH = "边青市场",
+                            Priority = 4,
+                            TourId = 2,
+                            TriggerRadius = 80
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ApprovalStatus = 0,
+                            Description_VI = "Nơi tái hiện những tàn khốc của chiến tranh.",
+                            ImageUrl = "img_bao_tang.jpg",
+                            IsFavorite = false,
+                            Latitude = 10.779400000000001,
+                            Longitude = 106.6922,
+                            Name_EN = "War Remnants Museum",
+                            Name_JA = "戦争証跡博物館",
+                            Name_KO = "전쟁 잔존물 박물관",
+                            Name_VI = "Bảo tàng Chứng tích Chiến tranh",
+                            Name_ZH = "战争遗迹博物馆",
+                            Priority = 5,
+                            TourId = 2,
+                            TriggerRadius = 70
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ApprovalStatus = 0,
+                            Description_VI = "Khu phố đi bộ sầm uất ngay trung tâm thành phố.",
+                            ImageUrl = "img_nguyen_hue.jpg",
+                            IsFavorite = false,
+                            Latitude = 10.7743,
+                            Longitude = 106.7032,
+                            Name_EN = "Nguyen Hue Walking Street",
+                            Name_JA = "グエンフエ歩行者天国",
+                            Name_KO = "응우옌 후에 보행자 거리",
+                            Name_VI = "Phố đi bộ Nguyễn Huệ",
+                            Name_ZH = "阮惠步行街",
+                            Priority = 5,
+                            TourId = 1,
+                            TriggerRadius = 150
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ApprovalStatus = 0,
+                            Description_VI = "Tòa nhà cao nhất Việt Nam với kiến trúc hiện đại.",
+                            ImageUrl = "img_landmark.jpg",
+                            IsFavorite = false,
+                            Latitude = 10.7951,
+                            Longitude = 106.7218,
+                            Name_EN = "Landmark 81 Skyscraper",
+                            Name_JA = "ランドマーク 81",
+                            Name_KO = "랜드마크 81",
+                            Name_VI = "Tòa nhà Landmark 81",
+                            Name_ZH = "地标塔 81",
+                            Priority = 6,
+                            TourId = 1,
+                            TriggerRadius = 200
+                        });
                 });
 
             modelBuilder.Entity("TourGuideAdmin.Models.Tour", b =>
@@ -103,6 +237,9 @@ namespace TourGuideAdmin.Migrations
                     b.Property<string>("Description_ZH")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("EstimatedTime")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("TEXT");
 
@@ -124,6 +261,50 @@ namespace TourGuideAdmin.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tours");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name_EN = "Saigon Then & Now",
+                            Name_JA = "サイゴンの昔と今",
+                            Name_KO = "사이공의 과거와 현재",
+                            Name_VI = "Sài Gòn Xưa & Nay",
+                            Name_ZH = "西贡今昔"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name_EN = "Cultural Discovery",
+                            Name_JA = "文化発見",
+                            Name_KO = "문화 탐험",
+                            Name_VI = "Khám phá Văn Hóa",
+                            Name_ZH = "文化探索"
+                        });
+                });
+
+            modelBuilder.Entity("TourGuideAdmin.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

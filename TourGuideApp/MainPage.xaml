@@ -78,7 +78,7 @@
                                     </Frame.GestureRecognizers>
 
                                     <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="15">
-                                        <Image Grid.Column="0" WidthRequest="70" HeightRequest="70" Aspect="AspectFill" Source="{Binding FullImageUrl, TargetNullValue='img_poi_default.jpg', FallbackValue='img_poi_default.jpg'}">
+                                        <Image Grid.Column="0" WidthRequest="70" HeightRequest="70" Aspect="AspectFill" Source="{Binding LocalImageSource, TargetNullValue='img_poi_default.jpg', FallbackValue='img_poi_default.jpg'}">
                                             <Image.Clip>
                                                 <RoundRectangleGeometry CornerRadius="12" Rect="0,0,70,70"/>
                                             </Image.Clip>
@@ -149,7 +149,7 @@
                                     </Frame.GestureRecognizers>
 
                                     <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="15">
-                                        <Image Grid.Column="0" WidthRequest="60" HeightRequest="60" Aspect="AspectFill" Source="{Binding FullImageUrl, TargetNullValue='img_poi_default.jpg', FallbackValue='img_poi_default.jpg'}">
+                                        <Image Grid.Column="0" WidthRequest="60" HeightRequest="60" Aspect="AspectFill" Source="{Binding LocalImageSource, TargetNullValue='img_poi_default.jpg', FallbackValue='img_poi_default.jpg'}">
                                             <Image.Clip>
                                                 <RoundRectangleGeometry CornerRadius="12" Rect="0,0,60,60"/>
                                             </Image.Clip>
@@ -179,6 +179,22 @@
 
             </VerticalStackLayout>
         </Frame>
+
+        <Button x:Name="btnAddPoi"
+                Text="+"
+                FontSize="32"
+                FontAttributes="Bold"
+                CornerRadius="30"
+                WidthRequest="60"
+                HeightRequest="60"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="20,20,20,40"
+                BackgroundColor="#C0502E"
+                TextColor="White"
+                Shadow="{Shadow Brush=Black, Offset='0,5', Opacity=0.3, Radius=5}"
+                IsVisible="False" 
+                Clicked="OnAddPoiClicked" />
 
     </Grid>
 </ContentPage>
