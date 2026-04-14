@@ -1,4 +1,4 @@
-﻿/* ============================================================
+﻿    /* ============================================================
    ADMIN THEME — đồng bộ với trang Quản lý 
    Đặt file này tại: wwwroot/css/admin-theme.css
    Include trong _Layout.cshtml:
@@ -6,13 +6,17 @@
    ============================================================ */
 
 :root {
-    --qr-accent: #C0502E;
-    --qr-accent-dark: #9a3e24;
+    --qr-accent: #6a9a43;
+    --qr-accent-dark: #3f6627;
+    --qr-accent-rgb: 106,154,67;
+    --qr-dark-1: #2f4f2b;
+    --qr-dark-2: #17320f;
+    --qr-text-rgb: 23,50,15;
     --qr-surface: #fff;
-    --qr-muted: #f5f3f0;
-    --qr-border: #e8e0d5;
-    --qr-text: #2c1a0e;
-    --qr-sub: #8a7060;
+    --qr-muted: #f5f7f2;
+    --qr-border: #e6ecdf;
+    --qr-text: #17320f;
+    --qr-sub: #6b7a55;
 }
 
 body {
@@ -22,7 +26,7 @@ body {
 
 /* ===== HERO HEADER ===== */
 .qr-page-header {
-    background: linear-gradient(135deg, #2c1a0e 0%, #4a3020 60%, #c0502e 100%);
+    background: linear-gradient(135deg, #d7e9c7 0%, #9cc28a 60%, #6a9a43 100%);
     border-radius: 18px;
     padding: 28px 32px;
     color: #fff;
@@ -92,7 +96,7 @@ body {
         .filter-bar .form-control:focus,
         .filter-bar .form-select:focus {
             border-color: var(--qr-accent);
-            box-shadow: 0 0 0 3px rgba(192,80,46,.12);
+            box-shadow: 0 0 0 3px rgba(var(--qr-accent-rgb),.12);
         }
 
 /* ===== BUTTONS ===== */
@@ -126,12 +130,12 @@ body {
     }
 
 /* ===== CARD / SURFACE ===== */
-.qr-card {
+    .qr-card {
     background: var(--qr-surface);
     border: 1px solid var(--qr-border);
     border-radius: 14px;
     padding: 20px;
-    box-shadow: 0 2px 8px rgba(44,26,14,.04);
+    box-shadow: 0 2px 8px rgba(var(--qr-text-rgb),.04);
 }
 
 /* ===== TABLE ===== */
@@ -190,7 +194,7 @@ body {
 
     .qr-stat-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(44,26,14,.08);
+        box-shadow: 0 6px 16px rgba(var(--qr-text-rgb),.08);
     }
 
     .qr-stat-card .num {
@@ -222,7 +226,7 @@ body {
     }
 
     .qr-prose p {
-        color: #4a3a30;
+        color: var(--qr-dark-2);
     }
 
 /* ============================================================
@@ -289,7 +293,7 @@ body {
 }
 
     .qr-item-card:hover {
-        box-shadow: 0 8px 28px rgba(192,80,46,.13);
+        box-shadow: 0 8px 28px rgba(var(--qr-accent-rgb),.13);
         transform: translateY(-3px);
     }
 
@@ -384,26 +388,26 @@ body {
 
 .btn-print-one {
     background: var(--qr-muted);
-    color: #2c7a2c;
-    border-color: #cde8cd;
+    color: var(--qr-accent-dark);
+    border-color: rgba(var(--qr-accent-rgb),.18);
 }
 
     .btn-print-one:hover {
-        background: #2c7a2c;
+        background: var(--qr-accent-dark);
         color: white;
-        border-color: #2c7a2c;
+        border-color: var(--qr-accent-dark);
     }
 
 .btn-view {
     background: var(--qr-muted);
-    color: #1a5ba8;
-    border-color: #cddff5;
+    color: var(--qr-accent-dark);
+    border-color: rgba(var(--qr-accent-rgb),.15);
 }
 
     .btn-view:hover {
-        background: #1a5ba8;
+        background: var(--qr-accent-dark);
         color: white;
-        border-color: #1a5ba8;
+        border-color: var(--qr-accent-dark);
     }
 
 /* Empty state */
@@ -496,12 +500,12 @@ body {
 }
 
 /* ============================================================
-   SIDEBAR — đồng bộ với theme nâu/cam
+   SIDEBAR — đồng bộ với theme xanh retro
    ============================================================ */
 .qr-sidebar {
     width: 260px;
     min-height: 100vh;
-    background: linear-gradient(180deg, #2c1a0e 0%, #4a3020 100%);
+    background: linear-gradient(180deg, var(--qr-dark-1) 0%, var(--qr-dark-2) 100%);
     color: #fff;
     padding: 24px 18px;
     position: relative;
@@ -561,7 +565,7 @@ body {
             }
 
             .qr-sidebar .nav-list a.active {
-                background: rgba(192,80,46,.18);
+                background: rgba(var(--qr-accent-rgb),.18);
                 color: #fff;
                 border-left-color: var(--qr-accent);
                 font-weight: 600;
@@ -632,7 +636,7 @@ body {
     .qr-field input:focus {
         outline: none;
         border-color: var(--qr-accent);
-        box-shadow: 0 0 0 3px rgba(192,80,46,.12);
+        box-shadow: 0 0 0 3px rgba(var(--qr-accent-rgb),.12);
     }
 
 .qr-field textarea {
